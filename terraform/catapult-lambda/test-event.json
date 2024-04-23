@@ -1,0 +1,19 @@
+{
+  "account": "453874272819",
+  "detail": {
+    "category": "StateChange",
+    "detailMessage": "Replication task started, with flag, 'fresh start'",
+    "eventId": "DMS-EVENT-0069",
+    "eventType": "REPLICATION_TASK_STARTED",
+    "type": "REPLICATION_TASK"
+  },
+  "detail-type": "DMS Replication Task State Change",
+  "id": "6b201764-d86c-084f-53d8-461599593387",
+  "region": "us-west-2",
+  "resources": [
+    "arn:aws:dms:us-west-2:453874272819:task:47WJTXHP2LZETFQC6JJWB5AX2IND6TO4HVUI6CI"
+  ],
+  "source": "aws.dms",
+  "time": "2024-01-22T05:53:32Z",
+  "version": "0"
+}

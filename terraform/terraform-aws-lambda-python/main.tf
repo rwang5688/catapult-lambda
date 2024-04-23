@@ -82,6 +82,7 @@ resource "aws_lambda_function" "lambda" {
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.9"
   source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
+  layers           = ["arn:aws:lambda:us-west-2:336392948345:layer:AWSSDKPandas-Python39:19"]
   ephemeral_storage {
     size           = 10240
   }
@@ -89,8 +90,15 @@ resource "aws_lambda_function" "lambda" {
   timeout          = 900
   environment {
     variables = {
-      SRC_BUCKET_NAME = "catapult-bucket-123456789012-${var.aws_region}"
-      DEST_BUCKET_NAME = "data-lake-raw-bucket-123456789012-${var.aws_region}"
+      CATAPULT_BASE_URL = "https://connect-us.catapultsports.com/api/v6"
+      CATAPULT_FTBL_ID = "<CATAPULT_FTBL_ID>" #unused in API, but for reference
+      CATAPULT_TOKEN = "<CATAPULT_TOKEN>"
+      CATAPULT_USERNAME = "<CATAPULT_USERNAME>"
+      CATAPULT_PASSWORD = "<CATAPULT_PASSWORD>"
+      SRC_BUCKET_NAME = "databricks-workspace-stack-80cb8-bucket"
+      SRC_OBJECT_PREFIX = "catapult-app-data/"
+      DEST_BUCKET_NAME = "databricks-workspace-stack-80cb8-bucket"
+      DEST_OBJECT_PREFIX = "catapult-app-data/"
       REGION_NAME = "${var.aws_region}"
     }
   }

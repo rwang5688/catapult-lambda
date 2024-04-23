@@ -7,8 +7,8 @@ import os
 from pprint import pformat
 
 import config
-# uncomment the following to start debugging
-from update_existing_data_aws import update_existing_data_aws
+# [wangrob]: uncomment the following to start debugging
+#from update_existing_data_aws import update_existing_data_aws
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger().setLevel(logging.INFO)
@@ -123,8 +123,8 @@ def lambda_handler(event, context):
     print("catapult-lambda: timestamp is: %s" % (timestamp))
     
     # execute update_existing_data_aws() function
-    # uncomment the following to start debugging
-    update_existing_data_aws()
+    # [wangrob]: uncomment the following to start debugging
+    #update_existing_data_aws()
     
     # end
     print('\n... Thaaat\'s all, Folks!')

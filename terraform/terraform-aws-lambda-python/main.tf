@@ -80,9 +80,9 @@ resource "aws_lambda_function" "lambda" {
   function_name    = "${var.lambda_name}"
   role             = "${aws_iam_role.lambda_iam.arn}"
   handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.9"
+  runtime          = "python3.12"
   source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
-  layers           = ["arn:aws:lambda:us-west-2:336392948345:layer:AWSSDKPandas-Python39:19"]
+  layers           = ["arn:aws:lambda:us-west-2:336392948345:layer:AWSSDKPandas-Python312:7"]
   ephemeral_storage {
     size           = 10240
   }
@@ -118,7 +118,7 @@ resource "aws_iam_role_policy_attachment" "logs_policy" {
 
 resource "aws_iam_role_policy_attachment" "admin_policy" {
     role       = "${aws_iam_role.lambda_iam.name}"
-    policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 resource "aws_iam_role_policy" "additional_policy" {

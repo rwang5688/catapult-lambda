@@ -7,7 +7,7 @@ import os
 from pprint import pformat
 
 import config
-
+#from update_existing_data_aws import update_existing_data_aws
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger().setLevel(logging.INFO)
@@ -28,9 +28,39 @@ def get_env_vars():
         print("get_env_vars: failed to retrieve REGION_NAME.")
         return False
         
+    config.catapult_base_url = get_env_var("CATAPULT_BASE_URL")
+    if config.catapult_base_url == "":
+        print("get_env_vars: failed to retrieve CATAPULT_BASE_URL.")
+        return False
+        
+    config.catapult_token = get_env_var("CATAPULT_TOKEN")
+    if config.catapult_token == "":
+        print("get_env_vars: failed to retrieve CATAPULT_TOKEN.")
+        return False
+        
+    config.catapult_ftbl_id = get_env_var("CATAPULT_FTBL_ID")
+    if config.catapult_username == "":
+        print("get_env_vars: failed to retrieve CATAPULT_FTBL_ID.")
+        return False
+        
+    config.catapult_username = get_env_var("CATAPULT_USERNAME")
+    if config.catapult_username == "":
+        print("get_env_vars: failed to retrieve CATAPULT_USERNAME.")
+        return False
+        
+    config.catapult_password = get_env_var("CATAPULT_PASSWORD")
+    if config.catapult_password == "":
+        print("get_env_vars: failed to retrieve CATAPULT_PASSWORD.")
+        return False
+
     config.src_bucket_name = get_env_var("SRC_BUCKET_NAME")
     if config.src_bucket_name == "":
         print("get_env_vars: failed to retrieve SRC_BUCKET_NAME.")
+        return False
+
+    config.src_object_prefix = get_env_var("SRC_OBJECT_PREFIX")
+    if config.src_object_prefix == "":
+        print("get_env_vars: failed to retrieve SRC_OBJECT_PREFIX.")
         return False
         
     config.dest_bucket_name = get_env_var("DEST_BUCKET_NAME")
@@ -38,11 +68,23 @@ def get_env_vars():
         print("get_env_vars: failed to retrieve DEST_BUCKET_NAME.")
         return False
         
+    config.dest_object_prefix = get_env_var("DEST_OBJECT_PREFIX")
+    if config.dest_object_prefix == "":
+        print("get_env_vars: failed to retrieve DEST_OBJECT_PREFIX.")
+        return False
+        
     # DEBUG
     print("get_env_vars:")
     print("region_name: %s" % (config.region_name))
+    print("catapult_base_url: %s" % (config.catapult_base_url))    
+    print("catapult_token: %s" % (config.catapult_token))
+    print("catapult_ftbl_id: %s" % (config.catapult_ftbl_id))
+    print("catapult_username: %s" % (config.catapult_username))
+    print("catapult_password: %s" % (config.catapult_password))
     print("src_bucket_name: %s" % (config.src_bucket_name))    
+    print("src_object_prefix: %s" % (config.src_object_prefix))    
     print("dest_bucket_name: %s" % (config.dest_bucket_name))
+    print("dest_object_prefix: %s" % (config.dest_object_prefix))
     
     return True
     
@@ -74,12 +116,15 @@ def lambda_handler(event, context):
 
     # set dest_object_prefix and dest_object_name
     today = date.today()
-    print("catapult-lambda: today's date = %s" % (str(today)))
+    print("catapult-lambda: today's date is: %s" % (str(today)))
     
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d-%H%M%S")
-    dest_object_name = "catapult-stats-"+timestamp+".csv"
-    print("dest_object_name: %s" % (dest_object_name))
+    print("catapult-lambda: timestamp is: %s" % (timestamp))
+    
+    # execute update_existing_data_aws() function
+    # uncomment the following to start debugging
+    #update_existing_data_aws()
     
     # end
     print('\n... Thaaat\'s all, Folks!')

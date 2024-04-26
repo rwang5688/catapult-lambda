@@ -104,7 +104,9 @@ def lambda_handler(event, context):
     # start
     print('\nStarting lambda_function.lambda_handler ...')
     LOGGER.info("%s", pformat({"Context" : context, "Request": event}))
-    
+    if not os.path.exists('/tmp'):
+        os.makedirs('/tmp')
+
     # get environment variables
     if get_env_vars() == False:
         print("catapult-lambda: get_env_vars() failed.")

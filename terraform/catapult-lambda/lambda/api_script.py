@@ -342,7 +342,7 @@ def get_specific_activity_practice_tags(id):
     
 def get_athlete_tags(write:bool,after_timestamp=datetime(2023,1,1).timestamp()):
     
-    prev =  variables.s3_read('athlete_info.csv')
+    prev =  variables.s3_read('tmp/athlete_info.csv')
     
     if write == False:
         return prev

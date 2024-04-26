@@ -43,7 +43,7 @@ def s3_read(file,return_object = False):
     
     if status == 200: 
         data = pd.read_csv(response.get("Body"))
-        data.to_csv(file, index=False)
+        data.to_csv("tmp/"+file, index=False)
         print(file)
         return data
     else: 

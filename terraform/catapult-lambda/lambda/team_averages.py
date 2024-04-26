@@ -13,7 +13,7 @@ def team_averages(data, to_csv=True):
     # So, we recalculate the AC Ratio values, based on each variables average for each day, and then store them as variable + "absolute ACWR". 
     # These are the columns to be used when calculating data, and displaying team or position summary data. Individual data should call "AC Ratio", which is defined in variables 
 
-    #data = pd.read_csv('Data with AC 3.csv')
+    #data = pd.read_csv('tmp/Data with AC 3.csv')
     
     print(sum(data['tag_0'].isna()))
     data['tag_0'] = data['tag_0'].fillna(0)
@@ -51,7 +51,7 @@ def team_averages(data, to_csv=True):
         print(data)
 
         print("1" + temp['tag'])
-        data.to_csv("temp-gb.csv")
+        data.to_csv("tmp/temp-gb.csv")
         data['first_reind'] = 1
         #data.index = data.index.droplevel(1)
         print(data.index)
@@ -171,7 +171,7 @@ def team_averages(data, to_csv=True):
         data[f'{position}summary_z_avg'] = data.loc[:,summary_28_z_score].mean(axis=1,numeric_only=True,skipna=True)
         data[f'{position}summary_tagged_z_avg'] = data.loc[:,summary_28_tagged_z_score].mean(axis=1,numeric_only=True,skipna=True)
         data[f'{position}summary tagged uncoupled ACWR'] = data.loc[:,summary_tagged_ACWRs].mean(axis=1,numeric_only=True,skipna=True)
-        #data.to_csv('temp.csv')
+        #data.to_csv('tmp/temp.csv')
         '''
         if position == '':
             print(outpath)
@@ -246,9 +246,9 @@ def team_averages(data, to_csv=True):
         print(data["high_speed_running 28-day tagged Avg"][0:10])
 
         #print(data["high_speed_running"][0:10])
-        hs_data.to_csv("highspeed.csv")
+        hs_data.to_csv("tmp/highspeed.csv")
         pl_data = data.loc[:,pl]
-        pl_data.to_csv("pl.csv")
+        pl_data.to_csv("tmp/pl.csv")
         '''
 
     def add_position_metrics(df:pd.DataFrame):

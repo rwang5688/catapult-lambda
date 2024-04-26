@@ -8,7 +8,7 @@ from pprint import pformat
 
 import config
 # [wangrob]: uncomment the following to start debugging
-#from update_existing_data_aws import update_existing_data_aws
+from update_existing_data_aws import update_existing_data_aws
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger().setLevel(logging.INFO)
@@ -126,7 +126,7 @@ def lambda_handler(event, context):
     
     # execute update_existing_data_aws() function
     # [wangrob]: uncomment the following to start debugging
-    #update_existing_data_aws()
+    update_existing_data_aws()
     
     # end
     print('\n... Thaaat\'s all, Folks!')

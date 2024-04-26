@@ -230,7 +230,7 @@ def update_existing_data_aws():
     #just_uploads.download_csv_s3()
     
     # %%
-    exisiting_activities = variables.s3_read('tmp/activities22.csv')
+    exisiting_activities = variables.s3_read('activities22.csv')
     exisiting_activities.set_index('date_id',inplace=True)
     exisiting_activities.index = pd.to_datetime(exisiting_activities.index)
     exisiting_activities.index.value_counts().sort_index().tail(10)
@@ -343,7 +343,7 @@ def update_existing_data_aws():
     # The  tagged no ac csv for the past data is not aligned with  activities_22.csv - so we really need to redownload/recalculate tagged no ac for all the past data or at least make sure that while we are still developping this, we ensure that we do not miss data inbetween the most recent date in tagged_no_ac.csv and activities_22.csv
     
     # %%
-    past_tagged_no_ac = variables.s3_read('tmp/tagged_no_ac.csv')
+    past_tagged_no_ac = variables.s3_read('tagged_no_ac.csv')
     past_tagged_no_ac['date_id'] = pd.to_datetime(past_tagged_no_ac['date_id']).dt.date
     past_tagged_no_ac.set_index('date_id',inplace=True)
     past_tagged_no_ac.sort_index(inplace=True)
@@ -401,7 +401,7 @@ def update_existing_data_aws():
     # %%
     
     # %%
-    exisiting_ac_data = variables.s3_read('tmp/full ac data.csv')
+    exisiting_ac_data = variables.s3_read('full ac data.csv')
     exisiting_ac_data['date_id'] = pd.to_datetime(exisiting_ac_data['date_id']).dt.date
     exisiting_ac_data = exisiting_ac_data[exisiting_ac_data['date_id'] < pull_since]
     #exisiting_ac_data.loc[:,['date_id','tag_0']]
@@ -428,8 +428,8 @@ def update_existing_data_aws():
     
     # %%
     #just_uploads.download_csv_s3(['team_summary_2.csv','position_summary.csv'])
-    exisiting_team_summary = variables.s3_read('tmp/team_summary_2.csv')
-    exisiting_position_summary = variables.s3_read('tmp/position_summary.csv')
+    exisiting_team_summary = variables.s3_read('team_summary_2.csv')
+    exisiting_position_summary = variables.s3_read('position_summary.csv')
     
     exisiting_team_summary['date_id'] = pd.to_datetime(exisiting_team_summary['date_id']).dt.date
     exisiting_position_summary['date_id'] = pd.to_datetime(exisiting_position_summary['date_id']).dt.date

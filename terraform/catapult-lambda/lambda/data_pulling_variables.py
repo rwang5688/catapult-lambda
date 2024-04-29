@@ -3,7 +3,7 @@ import datetime as dt
 import calendar
 import numpy as np
 import boto3
-import pickle
+import os
 import json
 
 import config
@@ -43,6 +43,11 @@ def s3_read(file,return_object = False):
     
     if status == 200: 
         data = pd.read_csv(response.get("Body"))
+        #mkdir if it doesn't exist:
+        if not os.path.exists("tmp"):
+            os.mkdir("tmp")
+        else: 
+            print('tmp directory exists')
         data.to_csv(f"tmp/{file}", index=False)
         print(file)
         return data

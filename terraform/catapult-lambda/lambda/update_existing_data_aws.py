@@ -71,7 +71,7 @@ def activitity_ids_2(after_date=1641026743, write=True):
     df = df[df["date_id"] > dt.datetime.fromtimestamp(after_date)]
     df['date_id'] = pd.to_datetime(df['date_id'])
     
-    df.to_csv('temp/id_date_match_2.csv')
+    df.to_csv('tmp/id_date_match_2.csv')
 
     df['tag'] = pd.Series(df['ids']).apply(lambda x :  md_tag_dict[x])
     #id_date_dict = dict(zip(df['ids'],df['date_id']))
@@ -82,7 +82,7 @@ def activitity_ids_2(after_date=1641026743, write=True):
     #Trying to deal with the tag consolidation and activity consolidation at once later on
 
     #df["ids"] = ids_df["ids"]
-    #df.to_csv('temp/2022 tags_2.csv') #removing this for now as i dont think tags 2022_2 are needed to be read again, we can just save them and reuse variable 
+    #df.to_csv('tmp/2022 tags_2.csv') #removing this for now as i dont think tags 2022_2 are needed to be read again, we can just save them and reuse variable 
     
     #pickle ids
     return df, ids
@@ -134,10 +134,10 @@ def get_new_stats(new_ids):
                 print(athlete)
                 print(type(athlete))
         #merged = pd.merge(athlete_info_df,id_date_match,left_on='practice_tag',right_on='ids')
-        #merged.to_csv("temp/date_athlete_tag_merged.csv")
+        #merged.to_csv("tmp/date_athlete_tag_merged.csv")
     
-    dfs.to_csv("temp/activities22.csv")
-    athlete_info_df.to_csv("temp/athlete_info.csv")
+    dfs.to_csv("tmp/activities22.csv")
+    athlete_info_df.to_csv("tmp/athlete_info.csv")
     return dfs,athlete_info_df
 
 
@@ -246,7 +246,7 @@ def update_existing_data_aws():
     old_activities.head(5)
     
     # %%
-    #origingal_id_date_match = pd.read_csv('temp/id_date_match.csv')
+    #origingal_id_date_match = pd.read_csv('tmp/id_date_match.csv')
     #origingal_id_date_match['date_id'] = pd.to_datetime(origingal_id_date_match['date_id'])
     #origingal_id_date_match = origingal_id_date_match[['date_id', 'ids']]
     
@@ -283,11 +283,11 @@ def update_existing_data_aws():
     daily_new_athlete_info
 
     # %%
-    temp = new_activities.loc[:,['date_id','practice_tag','athlete_id','athlete_name','total_player_load','total_duration']]
-    temp = new_ids_tags_df.merge(temp,left_on='ids',right_on='practice_tag')
+    tmp = new_activities.loc[:,['date_id','practice_tag','athlete_id','athlete_name','total_player_load','total_duration']]
+    tmp = new_ids_tags_df.merge(tmp,left_on='ids',right_on='practice_tag')
     def get_mode(x):
         return x.value_counts().index[0]
-    daily_new_ids_tags = temp.groupby(['date_id_y'])[['tag','practice_tag']].agg(get_mode).reset_index()
+    daily_new_ids_tags = tmp.groupby(['date_id_y'])[['tag','practice_tag']].agg(get_mode).reset_index()
     daily_new_ids_tags.rename(columns={'date_id_y':'date_id'},inplace=True)
     daily_new_ids_tags
     daily_new_athlete_info
@@ -295,7 +295,7 @@ def update_existing_data_aws():
     # %%
     new_athlete_info_and_tags = daily_new_athlete_info.merge(daily_new_ids_tags,on='date_id')
     #not_in_activities = set(new_athlete_info_and_tags.groupby(['id','date_id']).count().index) - set(new_activities.groupby(['athlete_id','date_id']).count().index)
-    new_athlete_info_and_tags.to_csv('temp/new_athlete_info_and_tags.csv',index=False)
+    new_athlete_info_and_tags.to_csv('tmp/new_athlete_info_and_tags.csv',index=False)
     #quit()
     # %%
     ##Group data by day, combining all activities for that day
@@ -321,7 +321,7 @@ def update_existing_data_aws():
     new_daily_activities['date_id'] = pd.to_datetime(new_daily_activities['date_id']).dt.date
     updated_activities = pd.concat([exisiting_activities,new_daily_activities],axis=0)
     updated_activities.reset_index(inplace=True,drop = True)
-    updated_activities.to_csv('temp/activities22.csv',index = False)
+    updated_activities.to_csv('tmp/activities22.csv',index = False)
     updated_activities['date_id'] = pd.to_datetime(updated_activities['date_id'])
     print(updated_activities['date_id'].max())
     updated_activities['date_id'].min()
@@ -371,7 +371,7 @@ def update_existing_data_aws():
     
     # %%
     updated_tagged_no_ac = pd.concat([past_tagged_no_ac,new_tagged_no_ac],axis=0)
-    updated_tagged_no_ac.to_csv('temp/tagged_no_ac.csv')
+    updated_tagged_no_ac.to_csv('tmp/tagged_no_ac.csv')
     #We have to get the last 30 days before the oldest activity in the update to calculate rolling metrics
     recent_tagged_no_ac = updated_tagged_no_ac[updated_tagged_no_ac.index > pull_since -dt.timedelta(days=33)] 
     recent_tagged_no_ac.reset_index(inplace=True)
@@ -387,7 +387,7 @@ def update_existing_data_aws():
         if 'tag_' in c:
             tag_cols.append(c)
     needed_availability_tags_cols = ['date_id','name','id',] + tag_cols 
-    #temp = new_athlete_info_and_tags.loc[:,needed_availability_tags_cols].rename(columns = {'name':'athlete_na'})
+    #tmp = new_athlete_info_and_tags.loc[:,needed_availability_tags_cols].rename(columns = {'name':'athlete_na'})
     new_athlete_info_and_tags['date_id'] = pd.to_datetime(new_athlete_info_and_tags['date_id'])
     
     new_ac_data = recent_ac_data_no_tag.merge(new_athlete_info_and_tags,left_on=['date_id','athlete_name'],right_on=['date_id','name'],suffixes=('','_drop'))
@@ -464,8 +464,8 @@ def update_existing_data_aws():
     updated_team_summary
     
     # %%
-    #updated_position_summary.to_csv('temp/position_summary.csv')
-    #updated_team_summary.to_csv('temp/team_summary_2.csv')
+    #updated_position_summary.to_csv('tmp/position_summary.csv')
+    #updated_team_summary.to_csv('tmp/team_summary_2.csv')
     print(updated_team_summary['date_id'].min(),updated_position_summary['date_id'].max()
     )#get columns containing player_load
     player_load_cols = ['date_id']
@@ -475,12 +475,12 @@ def update_existing_data_aws():
     updated_ac_data.loc[:,player_load_cols]
     
     # %%
-    updated_team_summary.to_csv('temp/team_summary_2.csv',index = False)
-    updated_position_summary.to_csv('temp/position_summary.csv',index = False)
-    updated_ac_data.to_csv('temp/full_ac_data.csv',index = False)
+    updated_team_summary.to_csv('tmp/team_summary_2.csv',index = False)
+    updated_position_summary.to_csv('tmp/position_summary.csv',index = False)
+    updated_ac_data.to_csv('tmp/full_ac_data.csv',index = False)
     recent_ac_data = recent_ac_data[pd.to_datetime(recent_ac_data['date_id']) > pd.to_datetime(pull_since) - dt.timedelta(days=90)]
     recent_ac_data.reset_index(inplace=True)
-    recent_ac_data.to_csv('temp/recent_ac_data.csv',index = False)
+    recent_ac_data.to_csv('tmp/recent_ac_data.csv',index = False)
     
     # %%
     just_uploads.upload_csvs_s3()

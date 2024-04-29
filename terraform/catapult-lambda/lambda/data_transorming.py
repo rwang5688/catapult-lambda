@@ -5,7 +5,7 @@ import data_pulling_variables as variables
 
 import config
 
-#data = pd.read_csv('temp/curr_data.csv')
+#data = pd.read_csv('tmp/curr_data.csv')
 
 #x.insert(0,0)
 
@@ -71,7 +71,7 @@ def add_rolling_metrics(data, cols_present = False,to_csv = True):
         if j%10 == 0:
             print(f"{j} athletes processed")
         #takes in a group_by athletes dataframe and calculates the correct metrics for each column within that dataframe, so that this function can be used in groupby apply
-        #df_gb = add_practice_tag(df_gb) #.to_csv("temp/df_gb_where_tag.csv")
+        #df_gb = add_practice_tag(df_gb) #.to_csv("tmp/df_gb_where_tag.csv")
         #print('df_gb', df_gb)
         to_drop = [] #Tracks duplicate columns
         dont_drop = []
@@ -159,7 +159,7 @@ def add_rolling_metrics(data, cols_present = False,to_csv = True):
             df = df.loc[start_ind,:]
             
             return df
-        #df_gb.to_csv('temp/df_gb_where_tag.csv')
+        #df_gb.to_csv('tmp/df_gb_where_tag.csv')
         #print(df_gb['date_id'])
         #df_gb = add_practice_tag(df_gb)
         #print("adding tags dfgb:",df_gb['tag'])
@@ -191,7 +191,7 @@ def add_rolling_metrics(data, cols_present = False,to_csv = True):
     with_new_metrics = with_new_metrics.reorder_levels(["date_id", "athlete_name"]).sort_index(axis = 0,level = "date_id")
     
     with_new_metrics = with_new_metrics.reset_index(["date_id","athlete_name"])
-    #with_new_metrics.to_csv("temp/no_ac.csv")
+    #with_new_metrics.to_csv("tmp/no_ac.csv")
     print(f"TWO tag_0 present =={'tag_0' in with_new_metrics.columns}")
 
     i = 0
@@ -332,18 +332,18 @@ def add_rolling_metrics(data, cols_present = False,to_csv = True):
 
     #variables.position_name_group_map(x) #in place
    
-    if to_csv: x.to_csv('temp/Data With AC 3.csv')   
+    if to_csv: x.to_csv('tmp/Data With AC 3.csv')   
     return x
     #add_practice_tag(x,outpath='Data With AC 3.csv')
     
-#add_rolling_metrics(pd.read_csv("temp/tagged_no_ac_data.csv"))
+#add_rolling_metrics(pd.read_csv("tmp/tagged_no_ac_data.csv"))
 
-#activities = pd.read_csv('temp/merge_with_activities.csv')
-#w_tag = add_practice_tag(activities, "merge_with_activities.csv")#add_rolling_metrics(pd.read_csv('temp/activities22.csv'))
+#activities = pd.read_csv('tmp/merge_with_activities.csv')
+#w_tag = add_practice_tag(activities, "merge_with_activities.csv")#add_rolling_metrics(pd.read_csv('tmp/activities22.csv'))
 
 #print(w_tag)
 #add_rolling_metrics(w_tag)
 
-#add_rolling_metrics(pd.read_csv("temp/tagged_no_ac_data.csv"))
+#add_rolling_metrics(pd.read_csv("tmp/tagged_no_ac_data.csv"))
 
-#data = pd.read_csv("temp/Data With AC 3.csv")
+#data = pd.read_csv("tmp/Data With AC 3.csv")

@@ -212,7 +212,7 @@ def activitity_ids(after_date = 1641026743, write = True):
     df = pd.DataFrame(data= {"date_id" : dates, "ids" : ids})
     df = df[df["date_id"] > dt.datetime.fromtimestamp(after_date)]
     df['date_id'] = pd.to_datetime(df['date_id'])
-    df.to_csv('temp/id_date_match.csv')
+    df.to_csv('tmp/id_date_match.csv')
     df['tag'] = pd.Series(df['ids']).apply(lambda x :  md_tag_dict[x])
     #df['ids'] = ids
     df = df.groupby("date_id")['tag'].apply(tag_consolidate)
@@ -313,13 +313,13 @@ def all_activities_stats(write = False, unix_start = datetime(2023,1,1).timestam
         # From that we can just recalculate for the past 29 days 
         
 
-        dfs.to_csv("temp/activities22.csv")
+        dfs.to_csv("tmp/activities22.csv")
         #need to set up config file to use boto 
         #s3 = boto3.resource('s3')
         #s3.meta.client.upload_file('activities22.csv','cal-football-data','activities22.csv')
         return dfs
     else:
-        pd.read_csv("temp/test activities22.csv")
+        pd.read_csv("tmp/test activities22.csv")
 #all_activities_stats(write = True, update=True)
 
 #s3 = boto3.resource('s3')
@@ -374,12 +374,12 @@ def get_athlete_tags(write:bool,after_timestamp=datetime(2023,1,1).timestamp()):
                 print(athlete)
                 print(type(athlete))
 
-    merged = pd.merge(pd.read_csv("temp/athlete_info.csv"),pd.read_csv('temp/id_date_match.csv'),left_on='practice_tag',right_on='ids')
-    merged.to_csv("temp/date_athlete_tag_merged.csv")
+    merged = pd.merge(pd.read_csv("tmp/athlete_info.csv"),pd.read_csv('tmp/id_date_match.csv'),left_on='practice_tag',right_on='ids')
+    merged.to_csv("tmp/date_athlete_tag_merged.csv")
     data = pd.read_csv(variables.data_path)
     print()
     
-    athlete_info_df.to_csv('temp/athlete_info.csv',index=False)
+    athlete_info_df.to_csv('tmp/athlete_info.csv',index=False)
     return athlete_info_df
 #get_athlete_tags()
 
@@ -387,14 +387,14 @@ def get_athlete_tags(write:bool,after_timestamp=datetime(2023,1,1).timestamp()):
 def merge_info_date_data(raw_data = 'activities22.csv', out_path = "tagged_no_ac_data.csv" ):
     #Function to be called after get_athlete_tags, and after data is gathered! Ideally move this to be called upon 
 
-    #pd.merge(pd.read_csv("temp/athlete_info.csv"),pd.read_csv('temp/id_date_match.csv'),left_on='practice_tag',right_on='ids').to_csv("temp/date_athlete_tag_merged.csv")
-    merged = pd.merge(pd.read_csv("temp/athlete_info.csv"),pd.read_csv('temp/id_date_match.csv'),left_on='practice_tag',right_on='ids')
+    #pd.merge(pd.read_csv("tmp/athlete_info.csv"),pd.read_csv('tmp/id_date_match.csv'),left_on='practice_tag',right_on='ids').to_csv("tmp/date_athlete_tag_merged.csv")
+    merged = pd.merge(pd.read_csv("tmp/athlete_info.csv"),pd.read_csv('tmp/id_date_match.csv'),left_on='practice_tag',right_on='ids')
     merged.rename(columns={"name":"athlete_name","position_name_x":"position_name"},inplace=True)
     merged['date_id'] = pd.to_datetime(merged['date_id'])
     tags = pd.read_csv(tags_csv_path)
     tags['date_id'] = pd.to_datetime(tags['date_id'])
     merged = merged.merge(tags,on='date_id')
-    merged.to_csv("temp/date_athlete_tag_merged.csv")
+    merged.to_csv("tmp/date_athlete_tag_merged.csv")
     
     data = pd.read_csv(raw_data) #(variables.data_path)
     data['date_id'] = pd.to_datetime(data['date_id'])
@@ -481,17 +481,17 @@ def activitity_ids_2(after_date = 1641026743, write = True):
     df = pd.DataFrame(data= {"date_id" : dates, "ids" : ids})
     df = df[df["date_id"] > dt.datetime.fromtimestamp(after_date)]
     df['date_id'] = pd.to_datetime(df['date_id'])
-    df.to_csv('temp/id_date_match_2.csv')
+    df.to_csv('tmp/id_date_match_2.csv')
     df['tag'] = pd.Series(df['ids']).apply(lambda x :  md_tag_dict[x])
     #df['ids'] = ids
 
     df = df.groupby("date_id")['tag'].apply(tag_consolidate)
-    df.to_csv('temp/2022 tags_2.csv')
+    df.to_csv('tmp/2022 tags_2.csv')
     
     return [df, ids]
 
 '''
-data = pd.read_csv("temp/test_big_merge_2.csv")
+data = pd.read_csv("tmp/test_big_merge_2.csv")
 x = (data[(data["tag_0"]== "Starter")])
 y = (data[data['tag_1'] == 'Full'])
 print(len(x),len(y))

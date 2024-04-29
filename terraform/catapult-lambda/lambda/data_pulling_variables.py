@@ -43,12 +43,12 @@ def s3_read(file,return_object = False):
     
     if status == 200: 
         data = pd.read_csv(response.get("Body"))
-        #check if temp or tmp exist
+        #check if tmp or tmp exist
         if not os.path.exists("temp"):
             print("temp directory does not exist")
         if not os.path.exists("tmp"):
             print("tmp directory does not exist")
-        data.to_csv(f"temp/{file}", index=False)
+        data.to_csv(f"tmp/{file}", index=False)
         print(file)
         return data
     else: 
@@ -234,23 +234,23 @@ def datetime_set_ind(x):
     
     
 def give_z(df, var):
-    df['temp'] = 1
+    df['tmp'] = 1
     orig = list(df.index)
     df = df.resample('D').mean()
     for d in day_ranges:
         df[f"{var} {d}-day tagged Avg"] = df[var].rolling(d, closed = "left", min_periods = d//7*3).mean()
         df[f"{var} {d}-day tagged Z-score"] = df[var] - df[f"{var} {d}-day tagged Avg"]/ df[var].std()
     df = df.loc[orig]
-    df = df.drop(columns = 'temp')
+    df = df.drop(columns = 'tmp')
     return df 
     
     
 def add_tagged_z(df_gb):
     for v in summary_metrics:
-        temp = df_gb.groupby("tag").apply(lambda x: give_z(x,v)) 
+        tmp = df_gb.groupby("tag").apply(lambda x: give_z(x,v)) 
         
         for d in day_ranges:
-            df_gb[f"{v} {d}-day tagged Z-score"] = temp[f"{v} {d}-day tagged Z-score"]
+            df_gb[f"{v} {d}-day tagged Z-score"] = tmp[f"{v} {d}-day tagged Z-score"]
     return df_gb
 
 

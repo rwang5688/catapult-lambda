@@ -13,7 +13,7 @@ def team_averages(data, to_csv=True):
     # So, we recalculate the AC Ratio values, based on each variables average for each day, and then store them as variable + "absolute ACWR". 
     # These are the columns to be used when calculating data, and displaying team or position summary data. Individual data should call "AC Ratio", which is defined in variables 
 
-    #data = pd.read_csv('temp/Data with AC 3.csv')
+    #data = pd.read_csv('tmp/Data with AC 3.csv')
     
     print(sum(data['tag_0'].isna()))
     data['tag_0'] = data['tag_0'].fillna(0)
@@ -36,7 +36,7 @@ def team_averages(data, to_csv=True):
             x['tag_0'] = x['tag_0'].mode()
             return pd.Series.mean(x)
 
-        temp = data.groupby("date_id").mean()# .apply(lambda x : np.mean(x,))
+        tmp = data.groupby("date_id").mean()# .apply(lambda x : np.mean(x,))
         def agg_mode(x):
             m = pd.Series.mode(x)
             if len(m) > 1:
@@ -44,14 +44,14 @@ def team_averages(data, to_csv=True):
             else: return m
         tags = data.groupby('date_id')[['tag','tag_0']].agg(agg_mode)
         
-        temp['tag'] = tags['tag']
-        temp['tag_0'] = tags['tag_0']
-        #temp['tag_1'] = tags['tag_1']
-        data = temp
+        tmp['tag'] = tags['tag']
+        tmp['tag_0'] = tags['tag_0']
+        #tmp['tag_1'] = tags['tag_1']
+        data = tmp
         print(data)
 
-        print("1" + temp['tag'])
-        data.to_csv("temp/temp-gb.csv")
+        print("1" + tmp['tag'])
+        data.to_csv("tmp/tmp-gb.csv")
         data['first_reind'] = 1
         #data.index = data.index.droplevel(1)
         print(data.index)
@@ -171,7 +171,7 @@ def team_averages(data, to_csv=True):
         data[f'{position}summary_z_avg'] = data.loc[:,summary_28_z_score].mean(axis=1,numeric_only=True,skipna=True)
         data[f'{position}summary_tagged_z_avg'] = data.loc[:,summary_28_tagged_z_score].mean(axis=1,numeric_only=True,skipna=True)
         data[f'{position}summary tagged uncoupled ACWR'] = data.loc[:,summary_tagged_ACWRs].mean(axis=1,numeric_only=True,skipna=True)
-        #data.to_csv('temp/temp.csv')
+        #data.to_csv('tmp/tmp.csv')
         '''
         if position == '':
             print(outpath)
@@ -246,14 +246,14 @@ def team_averages(data, to_csv=True):
         print(data["high_speed_running 28-day tagged Avg"][0:10])
 
         #print(data["high_speed_running"][0:10])
-        hs_data.to_csv("temp/highspeed.csv")
+        hs_data.to_csv("tmp/highspeed.csv")
         pl_data = data.loc[:,pl]
-        pl_data.to_csv("temp/pl.csv")
+        pl_data.to_csv("tmp/pl.csv")
         '''
 
     def add_position_metrics(df:pd.DataFrame):
         print('in add position metrics',print(df['tag']))
-        temp = df.groupby("date_id").mean()# .apply(lambda x : np.mean(x,))
+        tmp = df.groupby("date_id").mean()# .apply(lambda x : np.mean(x,))
         def agg_mode(x):
             m = pd.Series.mode(x)
             if len(m) > 1:
@@ -261,14 +261,14 @@ def team_averages(data, to_csv=True):
             else: return m
         tags = df.groupby('date_id')[['tag','tag_0']].agg(agg_mode)
         print(tags['tag'])
-        temp['tag'] = tags['tag']
-        temp['tag_0'] = tags['tag_0']
-       #temp['tag_1'] = tags['tag_1']
-        df = temp
+        tmp['tag'] = tags['tag']
+        tmp['tag_0'] = tags['tag_0']
+       #tmp['tag_1'] = tags['tag_1']
+        df = tmp
         print(df['tag'])
         print(df['tag'].unique())
 
-        df = add_team_metrics(df,'temp.csv','position ')
+        df = add_team_metrics(df,'tmp.csv','position ')
         return df
         
     team_summary = add_team_metrics(data, team_summary_csv_path) 

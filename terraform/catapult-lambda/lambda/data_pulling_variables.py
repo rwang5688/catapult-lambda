@@ -43,12 +43,12 @@ def s3_read(file,return_object = False):
     
     if status == 200: 
         data = pd.read_csv(response.get("Body"))
-        #mkdir if it doesn't exist:
+        #check if temp or tmp exist
+        if not os.path.exists("temp"):
+            print("temp directory does not exist")
         if not os.path.exists("tmp"):
-            os.mkdir("tmp")
-        else: 
-            print('tmp directory exists')
-        data.to_csv(f"tmp/{file}", index=False)
+            print("tmp directory does not exist")
+        data.to_csv(f"temp/{file}", index=False)
         print(file)
         return data
     else: 

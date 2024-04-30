@@ -46,9 +46,9 @@ def s3_read(file,return_object = False):
         #check if tmp or tmp exist
         if not os.path.exists("temp"):
             print("temp directory does not exist")
-        if not os.path.exists("tmp"):
-            print("tmp directory does not exist")
-        data.to_csv(f"tmp/{file}", index=False)
+        if not os.path.exists("/tmp"):
+            print("/tmp directory does not exist")
+        data.to_csv(f"/tmp/{file}", index=False)
         print(file)
         return data
     else: 
@@ -234,14 +234,14 @@ def datetime_set_ind(x):
     
     
 def give_z(df, var):
-    df['tmp'] = 1
+    df['/tmp'] = 1
     orig = list(df.index)
     df = df.resample('D').mean()
     for d in day_ranges:
         df[f"{var} {d}-day tagged Avg"] = df[var].rolling(d, closed = "left", min_periods = d//7*3).mean()
         df[f"{var} {d}-day tagged Z-score"] = df[var] - df[f"{var} {d}-day tagged Avg"]/ df[var].std()
     df = df.loc[orig]
-    df = df.drop(columns = 'tmp')
+    df = df.drop(columns = '/tmp')
     return df 
     
     
